@@ -1,39 +1,42 @@
 class Rotor:
-    def __init__(self, combo, notch):
-        self.combination = [letter for letter in combo]
+    def __init__(self, sequence, notch):
+        self.pin_sequence = [letter for letter in sequence]
         self.notch = notch
+        self.position = None
+
+
 
 
 class Reflector:
-    def __init__(self, combo):
-        self.combination = [letter for letter in combo]
+    def __init__(self, sequence):
+        self.pin_sequence = [letter for letter in sequence]
 
 
 # Dictionary containing the output "key" and the notch location.
 ROTOR_DETAILS = {
     "rotor_one":
         {
-            "key": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+            "pins": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
             "notch": "Q"
         },
     "rotor_two":
         {
-            "key": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+            "pins": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
             "notch": "E"
         },
     "rotor_three":
         {
-            "key": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+            "pins": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
             "notch": "V"
         },
     "rotor_four":
         {
-            "key": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+            "pins": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
             "notch": "J"
         },
     "rotor_five":
         {
-            "key": "VZBRGITYUPSDNHLXAWMJQOFECK",
+            "pins": "VZBRGITYUPSDNHLXAWMJQOFECK",
             "notch": "Z"
         },
     "reflector": "YRUHQSLDPXNGOKMIEBFZCWVJAT"
