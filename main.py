@@ -4,6 +4,40 @@ ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 
+def encode_letter(pin_in: str, rotor: Rotor):
+    """Takes the input and outputs the corresponding letter from current rotor"""
+    pin_in_index = ALPHABET.index(pin_in)
+    pin_out = rotor.pin_sequence[(pin_in_index + 1) % 26]
+    return pin_out
+
+
+def decode_letter(pin_in: str, rotor: Rotor):
+    """Takes the input and outputs the corresponding letter from current rotor"""
+    pin_in_index = rotor.pin_sequence.index(pin_in)
+    pin_out = ALPHABET[(pin_in_index - 1) % 26]
+    return pin_out
+
+
+def encrypt(plain_text: str):
+    """Takes the unencrypted text and passes it through the sequence of rotors. Outputs the encrypted text."""
+    if plain_text == " ":
+        return ""
+    encrypted_letter = plain_text
+    for rotor in rotor_sequence:
+        encrypted_letter = encode_letter(encrypted_letter, rotor)
+    return encrypted_letter
+
+
+def decrypt(encrypted_letter: str):
+    """Takes the encrypted text and passes it through the sequence of rotors. Outputs the decrypted text."""
+    if encrypted_letter == " ":
+        return ""
+    decrypted_letter = encrypted_letter
+    for rotor in rotor_sequence:
+        decrypted_letter = decode_letter(decrypted_letter, rotor)
+    return decrypted_letter
+
+
 # Initialise the rotors
 rotor_one = Rotor(
     ROTOR_DETAILS["rotor_one"]["pins"],
@@ -31,64 +65,20 @@ reflector = Reflector(
     ROTOR_DETAILS["reflector"]
 )
 
+# Assign the specified rotors to their positions
+# TODO allow user to choose the rotors and order
 wheel_one = rotor_one
-wheel_two = rotor_three
+wheel_two = rotor_four
 wheel_three = rotor_five
 
+# Create a list of the rotors to simulate the path of encryption/decryption
 selected_rotors = [wheel_one, wheel_two, wheel_three]
 reversed_rotors = selected_rotors[::-1]
 selected_rotors.append(reflector)
 rotor_sequence = selected_rotors + reversed_rotors
-message = "hello"
 
-# rotor needs pin_in & pin_out, pin in corresponds to path = ALPHABET.index() while pin_out = pins.index(path)
+message = input('Message to encrypt: ').upper()
 
-def encode(pin_in, rotor):
-    """Takes the input and outputs the corresponding letter"""
-    pin_in_index = ALPHABET.index(pin_in.title())
-    pin_out = rotor.pin_sequence[(pin_in_index + 1) % 26]
-    return pin_out
-
-def decode(pin_in, rotor):
-    pin_in_index = rotor.pin_sequence.index(pin_in.title())
-    pin_out = ALPHABET[(pin_in_index - 1) % 26]
-    return pin_out
-
-def encrypt(input):
-    output = encode(
-        encode(
-            encode(
-                encode(
-                    encode(
-                        encode(
-                            encode(
-                                input,
-                                rotor_one),
-                            rotor_two),
-                        rotor_three),
-                    reflector),
-                rotor_three),
-            rotor_two),
-        rotor_one)
-    return output
-
-def decrypt(input):
-    output = decode(
-        decode(
-            decode(
-                decode(
-                    decode(
-                        decode(
-                            decode(
-                                input,
-                                rotor_one),
-                            rotor_two),
-                        rotor_three),
-                    reflector),
-                rotor_three),
-            rotor_two),
-        rotor_one)
-    return output
 
 encoded_message = ""
 for letter in message:
@@ -101,4 +91,5 @@ decoded_message = ""
 for letter in encoded_message:
     decoded_letter = decrypt(letter)
     decoded_message += decoded_letter
+
 print(decoded_message)
