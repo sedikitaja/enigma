@@ -1,25 +1,27 @@
-from rotors import Rotor, Reflector, ROTOR_DETAILS
-
-ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+from rotors import Rotor, Reflector, ROTOR_DETAILS, ALPHABET
 
 
 def encode_letter(pin_in: str, rotor: Rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
     pin_in_index = ALPHABET.index(pin_in)
-    pin_out = rotor.pin_sequence[(pin_in_index + 1) % 26]
+
+    pin_out = rotor.pin_sequence[(pin_in_index + rotor.position) % 26]
+    rotator()
     return pin_out
 
 
 def decode_letter(pin_in: str, rotor: Rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
     pin_in_index = rotor.pin_sequence.index(pin_in)
-    pin_out = ALPHABET[(pin_in_index - 1) % 26]
+    rotator()
+    pin_out = ALPHABET[(pin_in_index + rotor.position) % 26]
+
     return pin_out
 
 
 def encrypt(plain_text: str):
     """Takes the unencrypted text and passes it through the sequence of rotors. Outputs the encrypted text."""
+    # TODO Filter all punctuation
     if plain_text == " ":
         return ""
     encrypted_letter = plain_text
@@ -38,7 +40,25 @@ def decrypt(encrypted_letter: str):
     return decrypted_letter
 
 
-# Initialise the rotors
+def rotator():
+    """Increments the position of the first rotor by one, when it reaches the notch then steps the next rotor,
+    when that reaches the notch then the third rotor is stepped."""
+    turnover_one = False
+    turnover_two = False
+    wheel_one.position += 1
+    if wheel_one.position == wheel_one.pin_sequence.index(wheel_one.notch):
+        turnover_one = True
+    if turnover_one:
+        wheel_two.position += 1
+        turnover_one = False
+    if wheel_two.position == wheel_two.pin_sequence.index(wheel_two.notch):
+        turnover_two = True
+    if turnover_two:
+        wheel_three.position += 1
+        turnover_two = False
+
+
+# Initialise the rotors, leaving the position blank for the user to set
 rotor_one = Rotor(
     ROTOR_DETAILS["rotor_one"]["pins"],
     ROTOR_DETAILS["rotor_one"]["notch"]
@@ -71,14 +91,19 @@ wheel_one = rotor_one
 wheel_two = rotor_four
 wheel_three = rotor_five
 
+
 # Create a list of the rotors to simulate the path of encryption/decryption
 selected_rotors = [wheel_one, wheel_two, wheel_three]
 reversed_rotors = selected_rotors[::-1]
 selected_rotors.append(reflector)
 rotor_sequence = selected_rotors + reversed_rotors
 
-message = input('Message to encrypt: ').upper()
 
+wheel_one.position = 1
+wheel_two.position = 1
+wheel_three.position = 1
+# message = input('Message to encrypt: ').upper()
+message = "I"
 
 encoded_message = ""
 for letter in message:

@@ -5,11 +5,10 @@ class Rotor:
         self.position = None
 
 
-
-
 class Reflector:
     def __init__(self, sequence):
         self.pin_sequence = [letter for letter in sequence]
+        self.position = 0
 
 
 # Dictionary containing the output "key" and the notch location.
@@ -41,3 +40,6 @@ ROTOR_DETAILS = {
         },
     "reflector": "YRUHQSLDPXNGOKMIEBFZCWVJAT"
 }
+
+ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
