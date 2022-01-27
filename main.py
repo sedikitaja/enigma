@@ -1,21 +1,17 @@
 from rotors import Rotor, Reflector, ROTOR_DETAILS, ALPHABET
 
 
-def encode_letter(pin_in: str, rotor: Rotor):
+def encode_letter(pin_in: str, rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
     pin_in_index = ALPHABET.index(pin_in)
-
-    pin_out = rotor.pin_sequence[(pin_in_index + rotor.position) % 26]
-    rotator()
+    pin_out = rotor.pin_sequence[((pin_in_index + 1) + rotor.position) % 26]
     return pin_out
 
 
-def decode_letter(pin_in: str, rotor: Rotor):
+def decode_letter(pin_in: str, rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
     pin_in_index = rotor.pin_sequence.index(pin_in)
-    rotator()
-    pin_out = ALPHABET[(pin_in_index + rotor.position) % 26]
-
+    pin_out = ALPHABET[((pin_in_index - 1) - rotor.position) % 26]
     return pin_out
 
 
@@ -103,7 +99,7 @@ wheel_one.position = 1
 wheel_two.position = 1
 wheel_three.position = 1
 # message = input('Message to encrypt: ').upper()
-message = "I"
+message = "A"
 
 encoded_message = ""
 for letter in message:
@@ -112,6 +108,9 @@ for letter in message:
 
 print(encoded_message)
 
+wheel_one.position = 1
+wheel_two.position = 1
+wheel_three.position = 1
 decoded_message = ""
 for letter in encoded_message:
     decoded_letter = decrypt(letter)

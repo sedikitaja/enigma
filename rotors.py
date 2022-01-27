@@ -2,7 +2,7 @@ class Rotor:
     def __init__(self, sequence, notch):
         self.pin_sequence = [letter for letter in sequence]
         self.notch = notch
-        self.position = None
+        self.position = 0
 
 
 class Reflector:
