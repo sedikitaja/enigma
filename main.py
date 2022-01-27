@@ -86,11 +86,14 @@ reflector = Reflector(
 )
 
 # Assign the specified rotors to their positions
-# TODO allow user to choose the rotors and order
+# TODO allow user to choose the rotors
 wheel_one = rotor_one
 wheel_two = rotor_four
 wheel_three = rotor_five
 
+wheel_three.position = int(input("Set starting position of the third rotor: "))
+wheel_two.position = int(input("Set starting position of the second rotor: "))
+wheel_one.position = int(input("Set starting position of the first rotor: "))
 
 # Create a list of the rotors to simulate the path of encryption/decryption
 selected_rotors = [wheel_one, wheel_two, wheel_three]
@@ -98,26 +101,23 @@ reversed_rotors = selected_rotors[::-1]
 selected_rotors.append(reflector)
 rotor_sequence = selected_rotors + reversed_rotors
 
+response = input('Would you like to encrypt (E) or decrypt (D) a message?')
 
-wheel_one.position = 1
-wheel_two.position = 1
-wheel_three.position = 1
-# message = input('Message to encrypt: ').upper()
-message = "Z"
 
-encoded_message = ""
-for letter in message:
-    encoded_letter = encrypt(letter)
-    encoded_message += encoded_letter
+if response == "E":
+    message = input('Message to encrypt: ').upper()
+    encoded_message = ""
+    for letter in message:
+        encoded_letter = encrypt(letter)
+        encoded_message += encoded_letter
 
-print(encoded_message)
+    print(encoded_message)
 
-wheel_one.position = 1
-wheel_two.position = 1
-wheel_three.position = 1
-decoded_message = ""
-for letter in encoded_message:
-    decoded_letter = decrypt(letter)
-    decoded_message += decoded_letter
+elif response == "D":
+    message = input('Message to decrypt: ').upper()
+    decoded_message = ""
+    for letter in message:
+        decoded_letter = decrypt(letter)
+        decoded_message += decoded_letter
 
-print(decoded_message)
+    print(decoded_message)
