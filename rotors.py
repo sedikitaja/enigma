@@ -42,5 +42,4 @@ class Rotor:
 class Reflector:
     def __init__(self, sequence):
         self.pin_sequence = [letter for letter in sequence]
-        self.position = 0
-
+        self.position = 1

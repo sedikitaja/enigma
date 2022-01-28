@@ -5,15 +5,17 @@ def encode_letter(pin_in: str, rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
     pin_in_index = ALPHABET.index(pin_in)
     offset = rotor.position
-    pin_out = rotor.pin_sequence[(pin_in_index + offset) % 25]
+    # pin_out = rotor.pin_sequence[((pin_in_index + offset) + 26) % 26]
+    pin_out = ALPHABET[((pin_in_index + offset) + 26) % 26]
     return pin_out
 
 
 def decode_letter(pin_in: str, rotor):
     """Takes the input and outputs the corresponding letter from current rotor"""
-    pin_in_index = rotor.pin_sequence.index(pin_in)
+    # pin_in_index = rotor.pin_sequence.index(pin_in)
+    pin_in_index = ALPHABET.index(pin_in)
     offset = rotor.position
-    pin_out = ALPHABET[(pin_in_index - offset) % 25]
+    pin_out = ALPHABET[((pin_in_index - offset) + 26) % 26]
     return pin_out
 
 
@@ -58,6 +60,9 @@ def rotator():
     if turnover_two:
         wheel_three.position += 1
         turnover_two = False
+    for rotor in selected_rotors[:-1]:
+        if rotor.position > 25:
+            rotor.position = 0
 
 
 # Initialise the rotors, leaving the position blank for the user to set
@@ -130,3 +135,7 @@ elif response == "D":
         decoded_message += decoded_letter
 
     print(decoded_message)
+
+
+#test message
+#tobeornottobethatisthequestiontobeornottobethatisthequestionatthezootodayonthewaytosanjose
