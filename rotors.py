@@ -43,3 +43,24 @@ class Reflector:
     def __init__(self, sequence):
         self.pin_sequence = [letter for letter in sequence]
         self.position = 1
+
+
+def rotator(wheel_one, wheel_two, wheel_three, selected_rotors):
+    """Increments the position of the first rotor by one, when it reaches the notch then steps the next rotor,
+    when that reaches the notch then the third rotor is stepped."""
+    turnover_one = False
+    turnover_two = False
+    wheel_one.position += 1
+    if wheel_one.position == wheel_one.pin_sequence.index(wheel_one.notch):
+        turnover_one = True
+    if turnover_one:
+        wheel_two.position += 1
+        turnover_one = False
+    if wheel_two.position == wheel_two.pin_sequence.index(wheel_two.notch):
+        turnover_two = True
+    if turnover_two:
+        wheel_three.position += 1
+        turnover_two = False
+    for rotor in selected_rotors[:-1]:
+        if rotor.position > 25:
+            rotor.position = 0

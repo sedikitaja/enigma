@@ -1,4 +1,5 @@
-from rotors import Rotor, Reflector, ROTOR_DETAILS, ALPHABET
+from rotors import Rotor, Reflector, rotator, ROTOR_DETAILS, ALPHABET
+from plugboard import plugboard
 
 
 def encode_letter(pin_in: str, rotor):
@@ -24,7 +25,7 @@ def encrypt(plain_text: str):
     # TODO Filter all punctuation
     if plain_text == " ":
         return ""
-    rotator()
+    rotator(wheel_one=wheel_one, wheel_two=wheel_two, wheel_three=wheel_three, selected_rotors=selected_rotors)
     encrypted_letter = plain_text
     for rotor in rotor_sequence:
         encrypted_letter = encode_letter(encrypted_letter, rotor)
@@ -37,32 +38,11 @@ def decrypt(encrypted_letter: str):
     """Takes the encrypted text and passes it through the sequence of rotors. Outputs the decrypted text."""
     if encrypted_letter == " ":
         return ""
-    rotator()
+    rotator(wheel_one=wheel_one, wheel_two=wheel_two, wheel_three=wheel_three, selected_rotors=selected_rotors)
     decrypted_letter = encrypted_letter
     for rotor in rotor_sequence:
         decrypted_letter = decode_letter(decrypted_letter, rotor)
     return decrypted_letter
-
-
-def rotator():
-    """Increments the position of the first rotor by one, when it reaches the notch then steps the next rotor,
-    when that reaches the notch then the third rotor is stepped."""
-    turnover_one = False
-    turnover_two = False
-    wheel_one.position += 1
-    if wheel_one.position == wheel_one.pin_sequence.index(wheel_one.notch):
-        turnover_one = True
-    if turnover_one:
-        wheel_two.position += 1
-        turnover_one = False
-    if wheel_two.position == wheel_two.pin_sequence.index(wheel_two.notch):
-        turnover_two = True
-    if turnover_two:
-        wheel_three.position += 1
-        turnover_two = False
-    for rotor in selected_rotors[:-1]:
-        if rotor.position > 25:
-            rotor.position = 0
 
 
 # Initialise the rotors, leaving the position blank for the user to set
@@ -122,7 +102,8 @@ if response == "E":
     message = input('Message to encrypt: ').upper()
     encoded_message = ""
     for letter in message:
-        encoded_letter = encrypt(letter)
+        swapped_letter = plugboard(letter)
+        encoded_letter = plugboard(encrypt(swapped_letter))
         encoded_message += encoded_letter
     print(message)
     print(encoded_message)
@@ -131,11 +112,12 @@ elif response == "D":
     message = input('Message to decrypt: ').upper()
     decoded_message = ""
     for letter in message:
-        decoded_letter = decrypt(letter)
+        swapped_letter = plugboard(letter)
+        decoded_letter = plugboard(decrypt(swapped_letter))
         decoded_message += decoded_letter
 
     print(decoded_message)
 
 
 #test message
-#tobeornottobethatisthequestiontobeornottobethatisthequestionatthezootodayonthewaytosanjose
+#tobeornottobethatisthequestiontobeornottobethatisthequestionatthezootodayonthewaytosanjosexmarksthespecificspot

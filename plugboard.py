@@ -1,17 +1,57 @@
-from main import ALPHABET
-from random import choice
 # Plugboard
 # The plugboard would swap 10 pairs of letters
-plugboard_pairs = []
-alphabet = ALPHABET
-# Generate the 10 pairs and populate the list.
-for i in range(10):
-    letter_one = choice(alphabet)
-    alphabet.remove(letter_one)
-    letter_two = choice(alphabet)
-    alphabet.remove(letter_two)
-    letter_pair = (letter_one, letter_two)
-    plugboard_pairs.append(letter_pair)
+plugboard_pairs = [
+    [
+        "A",
+        "D"
+    ],
+    [
+        "E",
+        "N"
+    ],
+    [
+        "R",
+        "U"
+    ],
+    [
+        "Q",
+        "Z"
+    ],
+    [
+        "I",
+        "J"
+    ],
+    [
+        "Y",
+        "B"
+    ],
+    [
+        "K",
+        "P"
+    ],
+    [
+        "O",
+        "S"
+    ],
+    [
+        "T",
+        "C"
+    ],
+    [
+        "F",
+        "M"
+    ]
+]
 
-print(plugboard_pairs)
-print(alphabet)
+def plugboard(char):
+    for pair in plugboard_pairs:
+        if char in pair:
+            char_index = pair.index(char)
+            if char_index == 0:
+                return pair[1]
+            else:
+                return pair[0]
+        else:
+            return char
+
+print(plugboard("V"))
