@@ -1,26 +1,26 @@
 # Dictionary containing the output "key" and the notch location.
 ROTOR_DETAILS = {
-    "rotor_one":
+    "I":
         {
             "pins": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
             "notch": "Q"
         },
-    "rotor_two":
+    "II":
         {
             "pins": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
             "notch": "E"
         },
-    "rotor_three":
+    "III":
         {
             "pins": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
             "notch": "V"
         },
-    "rotor_four":
+    "IV":
         {
             "pins": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
             "notch": "J"
         },
-    "rotor_five":
+    "V":
         {
             "pins": "VZBRGITYUPSDNHLXAWMJQOFECK",
             "notch": "Z"
@@ -28,39 +28,18 @@ ROTOR_DETAILS = {
     "reflector": "YRUHQSLDPXNGOKMIEBFZCWVJAT"
 }
 
-ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 class Rotor:
     def __init__(self, sequence, notch):
-        self.pin_sequence = [letter for letter in sequence]
+        self.pin_sequence = sequence
         self.notch = notch
         self.position = -1
 
 
 class Reflector:
     def __init__(self, sequence):
-        self.pin_sequence = [letter for letter in sequence]
-        self.position = 1
+        self.pin_sequence = sequence
+        self.position = 0
 
-
-def rotator(wheel_one, wheel_two, wheel_three, selected_rotors):
-    """Increments the position of the first rotor by one, when it reaches the notch then steps the next rotor,
-    when that reaches the notch then the third rotor is stepped."""
-    turnover_one = False
-    turnover_two = False
-    wheel_one.position += 1
-    if wheel_one.position == wheel_one.pin_sequence.index(wheel_one.notch):
-        turnover_one = True
-    if turnover_one:
-        wheel_two.position += 1
-        turnover_one = False
-    if wheel_two.position == wheel_two.pin_sequence.index(wheel_two.notch):
-        turnover_two = True
-    if turnover_two:
-        wheel_three.position += 1
-        turnover_two = False
-    for rotor in selected_rotors[:-1]:
-        if rotor.position > 25:
-            rotor.position = 0
