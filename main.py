@@ -74,13 +74,16 @@ def encrypt_message(plain_text):
     Returns the encoded message."""
     message_output = ""
     for letter in plain_text:
-        right_rotor.pin_sequence = rotate(right_rotor.pin_sequence, right_rotor, middle_rotor, left_rotor)
-        encrypted_letter = encrypt_character(letter)
+        if letter not in ALPHABET:
+            pass
+        else:
+            right_rotor.pin_sequence = rotate(right_rotor.pin_sequence, right_rotor, middle_rotor, left_rotor)
+            encrypted_letter = encrypt_character(letter)
 
-        # Error check, Enigma would never encode a letter as itself.
-        if encrypted_letter == letter:
-            print(f'Error: {letter} encoded as itself.')
-        message_output += encrypted_letter
+            # Error check, Enigma would never encode a letter as itself.
+            if encrypted_letter == letter:
+                print(f'Error: {letter} encoded as itself.')
+            message_output += encrypted_letter
     return message_output
 
 
